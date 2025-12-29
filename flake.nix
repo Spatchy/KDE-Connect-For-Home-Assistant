@@ -9,12 +9,15 @@
   }: let
     system = "x86_64-linux";
     pkgs = nixpkgs.legacyPackages.${system};
+    runtimeDeps = with pkgs; [
+      kdePackages.kdeconnect-kde
+    ];
   in {
     devShells.${system}.default = pkgs.mkShell {
       buildInputs = with pkgs; [
         nodejs_latest
         nodePackages.npm
-      ];
+      ] ++ runtimeDeps;
       
       shellHook = ''
         echo "Node.js development environment loaded!"
@@ -27,6 +30,8 @@
       name = "kde-connect-for-home-assistant";
       
       src = self;
+
+      buildInputs = runtimeDeps;
       
       npmDeps = pkgs.importNpmLock {
         npmRoot = ./.;
