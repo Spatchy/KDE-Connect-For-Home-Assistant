@@ -6,6 +6,12 @@ import "./App.css";
 function App() {
   const [ count, setCount ] = useState(0);
 
+  const testServer = async () => {
+    const res = await fetch("http://localhost:3000");
+    const json = (await res.json()) as { msg: string };
+    alert("Server says: " + json.msg);
+  };
+
   return (
     <>
       <div>
@@ -22,6 +28,11 @@ function App() {
           setCount((count) => count + 1);
         }}>
           count is {count}
+        </button>
+        <button onClick={() => {
+          void testServer();
+        }}>
+          Test the server
         </button>
         <p>
           Edit <code>src/App.tsx</code> and save to test HMR
